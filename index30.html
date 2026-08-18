@@ -1,0 +1,1892 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06070b">
+<title>Muhsin Store</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#05060a;
+  --panel:rgba(13,15,22,.72);
+  --panel2:rgba(20,22,31,.82);
+  --text:#f8fafc;
+  --muted:#8d96a8;
+  --border:rgba(255,255,255,.08);
+  --accent:#7657ff;
+  --accent2:#b05cff;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* =========================================
+   ANIMATED BACKGROUND
+========================================= */
+
+#background{
+  position:fixed;
+  inset:0;
+  z-index:-10;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% -20%,#171126 0%,#090a0f 42%,#05060a 75%);
+}
+
+.grid-bg{
+  position:absolute;
+  inset:-100px;
+  opacity:.24;
+  background-image:
+    linear-gradient(rgba(145,120,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(145,120,255,.08) 1px,transparent 1px);
+  background-size:55px 55px;
+  transform:
+    perspective(500px)
+    rotateX(58deg)
+    scale(1.7)
+    translateY(100px);
+  animation:gridMove 14s linear infinite;
+  mask-image:linear-gradient(to bottom,transparent,#000 30%,#000 80%,transparent);
+}
+
+@keyframes gridMove{
+  from{background-position:0 0}
+  to{background-position:0 550px}
+}
+
+.orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.3;
+  animation:orbFloat 14s ease-in-out infinite alternate;
+}
+
+.orb.one{
+  width:420px;
+  height:420px;
+  background:#5b3fc8;
+  top:-220px;
+  left:-120px;
+}
+
+.orb.two{
+  width:360px;
+  height:360px;
+  background:#8b32bc;
+  right:-160px;
+  top:25%;
+  animation-delay:-4s;
+}
+
+.orb.three{
+  width:300px;
+  height:300px;
+  background:#263cc8;
+  left:25%;
+  bottom:-220px;
+  animation-delay:-8s;
+}
+
+@keyframes orbFloat{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(80px,50px) scale(1.15)}
+  100%{transform:translate(-50px,100px) scale(.9)}
+}
+
+.noise{
+  position:absolute;
+  inset:0;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+}
+
+/* PARTICLES */
+
+#particles{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:72px;
+  z-index:100;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  background:rgba(5,6,10,.55);
+  backdrop-filter:blur(22px);
+}
+
+.nav{
+  max-width:1400px;
+  height:100%;
+  margin:auto;
+  padding:0 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-weight:800;
+  letter-spacing:-.4px;
+}
+
+.logo-icon{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,#7356ff,#b044ff);
+  box-shadow:
+    0 0 25px rgba(118,87,255,.35),
+    inset 0 1px rgba(255,255,255,.3);
+  animation:logoPulse 3s ease-in-out infinite;
+}
+
+@keyframes logoPulse{
+  0%,100%{box-shadow:0 0 20px rgba(118,87,255,.25)}
+  50%{box-shadow:0 0 35px rgba(118,87,255,.5)}
+}
+
+.nav-links{
+  display:flex;
+  gap:5px;
+}
+
+.nav-links button{
+  color:var(--muted);
+  background:transparent;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:12px;
+  transition:.2s;
+}
+
+.nav-links button:hover,
+.nav-links button.active{
+  color:#fff;
+  background:rgba(255,255,255,.07);
+}
+
+.status{
+  color:#86efac;
+  font-size:11px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.status i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 12px #22c55e;
+  animation:statusPulse 2s infinite;
+}
+
+@keyframes statusPulse{
+  50%{opacity:.35;transform:scale(.7)}
+}
+
+/* =========================================
+   MAIN
+========================================= */
+
+#app{
+  max-width:1400px;
+  min-height:100vh;
+  margin:auto;
+  padding:105px 28px 110px;
+}
+
+.page{
+  animation:pageEnter .55s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes pageEnter{
+  from{
+    opacity:0;
+    transform:translateY(22px) scale(.985);
+    filter:blur(5px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+    filter:none;
+  }
+}
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero{
+  position:relative;
+  min-height:470px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  padding:75px;
+  border-radius:32px;
+  border:1px solid var(--border);
+  background:
+    linear-gradient(135deg,rgba(104,73,255,.15),transparent 40%),
+    rgba(12,14,20,.62);
+  backdrop-filter:blur(15px);
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.25),
+    inset 0 1px rgba(255,255,255,.04);
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:650px;
+  height:650px;
+  right:-260px;
+  top:-350px;
+  border-radius:50%;
+  background:radial-gradient(circle,#9c5cff44,transparent 65%);
+  animation:heroGlow 7s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlow{
+  from{transform:scale(.9)}
+  to{transform:scale(1.2)}
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(120deg,transparent 30%,rgba(255,255,255,.035),transparent 70%);
+  transform:translateX(-100%);
+  animation:shine 7s ease-in-out infinite;
+}
+
+@keyframes shine{
+  0%,65%{transform:translateX(-100%)}
+  85%,100%{transform:translateX(100%)}
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:720px;
+}
+
+.eyebrow{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding:8px 12px;
+  border-radius:100px;
+  color:#c4b5fd;
+  background:rgba(124,92,255,.09);
+  border:1px solid rgba(124,92,255,.2);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin-bottom:22px;
+}
+
+.eyebrow-dot{
+  width:6px;
+  height:6px;
+  background:#a78bfa;
+  border-radius:50%;
+  box-shadow:0 0 12px #a78bfa;
+}
+
+.hero h1{
+  font-size:clamp(46px,7vw,82px);
+  line-height:.92;
+  letter-spacing:-5px;
+}
+
+.hero h1 span{
+  background:linear-gradient(90deg,#a78bfa,#d8b4fe,#8b5cf6);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:textFlow 4s linear infinite;
+}
+
+@keyframes textFlow{
+  to{background-position:200% center}
+}
+
+.hero p{
+  max-width:610px;
+  margin-top:25px;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.8;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:32px;
+}
+
+.primary,
+.secondary{
+  position:relative;
+  overflow:hidden;
+  padding:13px 19px;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:750;
+  transition:.25s;
+}
+
+.primary{
+  color:#fff;
+  background:linear-gradient(135deg,#7657ff,#8d5cff);
+  box-shadow:0 10px 30px rgba(118,87,255,.25);
+}
+
+.primary:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent,#ffffff22,transparent);
+  transform:translateX(-100%);
+  animation:buttonShine 3s infinite;
+}
+
+@keyframes buttonShine{
+  45%,100%{transform:translateX(100%)}
+}
+
+.primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 15px 40px rgba(118,87,255,.4);
+}
+
+.secondary{
+  color:#ddd;
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--border);
+}
+
+.secondary:hover{
+  background:rgba(255,255,255,.09);
+  transform:translateY(-3px);
+}
+
+/* =========================================
+   SECTION
+========================================= */
+
+.section{
+  margin-top:50px;
+}
+
+.section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin-bottom:19px;
+}
+
+.section h2{
+  font-size:23px;
+  letter-spacing:-.7px;
+}
+
+.section-sub{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+}
+
+/* =========================================
+   CARDS
+========================================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.card{
+  position:relative;
+  min-height:275px;
+  overflow:hidden;
+  padding:22px;
+  border-radius:22px;
+  border:1px solid var(--border);
+  background:rgba(13,15,22,.7);
+  backdrop-filter:blur(18px);
+  transition:
+    transform .35s cubic-bezier(.2,.8,.2,1),
+    border-color .3s,
+    box-shadow .3s;
+  animation:cardEnter .55s both;
+}
+
+.card:nth-child(2){animation-delay:.07s}
+.card:nth-child(3){animation-delay:.14s}
+.card:nth-child(4){animation-delay:.21s}
+.card:nth-child(5){animation-delay:.28s}
+.card:nth-child(6){animation-delay:.35s}
+
+@keyframes cardEnter{
+  from{
+    opacity:0;
+    transform:translateY(25px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.card:before{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  right:-90px;
+  bottom:-90px;
+  border-radius:50%;
+  background:var(--app-color);
+  filter:blur(50px);
+  opacity:.12;
+  transition:.4s;
+}
+
+.card:hover{
+  transform:translateY(-8px) scale(1.012);
+  border-color:rgba(255,255,255,.17);
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.3),
+    0 0 45px color-mix(in srgb,var(--app-color) 10%,transparent);
+}
+
+.card:hover:before{
+  opacity:.25;
+  transform:scale(1.4);
+}
+
+.icon{
+  width:62px;
+  height:62px;
+  display:grid;
+  place-items:center;
+  border-radius:17px;
+  font-size:28px;
+  margin-bottom:20px;
+  color:#fff;
+  box-shadow:
+    0 12px 30px color-mix(in srgb,var(--app-color) 25%,transparent),
+    inset 0 1px rgba(255,255,255,.25);
+  transition:.35s;
+}
+
+.card:hover .icon{
+  transform:rotate(-5deg) scale(1.08);
+}
+
+.card h3{
+  font-size:18px;
+  letter-spacing:-.3px;
+}
+
+.card p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-top:7px;
+  min-height:43px;
+}
+
+.card-bottom{
+  position:absolute;
+  left:22px;
+  right:22px;
+  bottom:20px;
+  display:flex;
+  gap:8px;
+}
+
+.card-bottom button{
+  height:40px;
+  flex:1;
+  border-radius:10px;
+  color:white;
+  background:var(--accent);
+  font-size:12px;
+  font-weight:750;
+  transition:.2s;
+}
+
+.card-bottom button:hover{
+  filter:brightness(1.15);
+  transform:translateY(-2px);
+}
+
+.card-bottom .info{
+  flex:0 0 42px;
+  color:#aaa;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+}
+
+/* =========================================
+   DETAIL
+========================================= */
+
+.detail{
+  max-width:950px;
+  margin:auto;
+}
+
+.back{
+  color:var(--muted);
+  background:none;
+  font-size:12px;
+  margin-bottom:25px;
+  transition:.2s;
+}
+
+.back:hover{
+  color:white;
+  transform:translateX(-4px);
+}
+
+.detail-top{
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  gap:27px;
+  padding:38px;
+  border:1px solid var(--border);
+  border-radius:26px;
+  background:rgba(14,16,23,.75);
+  backdrop-filter:blur(20px);
+}
+
+.detail-top:after{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  right:-120px;
+  top:-180px;
+  border-radius:50%;
+  background:var(--detail-color);
+  filter:blur(100px);
+  opacity:.16;
+}
+
+.detail-icon{
+  position:relative;
+  z-index:2;
+  width:105px;
+  height:105px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:27px;
+  font-size:48px;
+}
+
+.detail h1{
+  position:relative;
+  z-index:2;
+  font-size:38px;
+  letter-spacing:-1.5px;
+}
+
+.detail-desc{
+  position:relative;
+  z-index:2;
+  color:var(--muted);
+  line-height:1.75;
+  font-size:13px;
+  margin-top:9px;
+}
+
+.download{
+  position:relative;
+  z-index:2;
+  margin-top:20px;
+  padding:12px 20px;
+  border-radius:11px;
+  color:#fff;
+  background:var(--accent);
+  font-weight:750;
+}
+
+.info-box{
+  margin-top:18px;
+  padding:28px;
+  border-radius:21px;
+  border:1px solid var(--border);
+  background:rgba(11,13,18,.75);
+}
+
+.info-box h2{
+  font-size:18px;
+}
+
+.info-box p{
+  color:var(--muted);
+  line-height:1.8;
+  font-size:13px;
+  margin-top:12px;
+}
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.search{
+  max-width:600px;
+  margin-bottom:25px;
+}
+
+.search input{
+  width:100%;
+  height:48px;
+  padding:0 16px;
+  color:white;
+  outline:none;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(13,15,22,.8);
+  transition:.25s;
+}
+
+.search input:focus{
+  border-color:#7657ff;
+  box-shadow:0 0 25px rgba(118,87,255,.12);
+}
+
+/* =========================================
+   ABOUT
+========================================= */
+
+.about{
+  max-width:850px;
+  margin:auto;
+}
+
+.about-box{
+  padding:45px;
+  border-radius:27px;
+  border:1px solid var(--border);
+  background:rgba(13,15,22,.75);
+  backdrop-filter:blur(18px);
+}
+
+.about h1{
+  font-size:43px;
+  letter-spacing:-2px;
+}
+
+.about p{
+  color:var(--muted);
+  line-height:1.9;
+  font-size:14px;
+  margin-top:20px;
+}
+
+/* =========================================
+   CROW
+========================================= */
+
+#crow{
+  position:fixed;
+  left:0;
+  top:0;
+  width:45px;
+  height:45px;
+  z-index:9999;
+  pointer-events:none;
+  filter:
+    drop-shadow(0 7px 9px #000)
+    drop-shadow(0 0 8px rgba(130,90,255,.3));
+}
+
+#crow svg{
+  width:45px;
+  height:45px;
+}
+
+.crow-wing{
+  transform-origin:9px 12px;
+  animation:wing .18s infinite alternate;
+}
+
+@keyframes wing{
+  from{transform:rotate(-12deg)}
+  to{transform:rotate(17deg)}
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+.mobile-nav{
+  display:none;
+}
+
+@media(max-width:950px){
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .nav-links,
+  .status{
+    display:none;
+  }
+
+  .mobile-nav{
+    display:flex;
+    position:fixed;
+    z-index:200;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    height:62px;
+    padding:6px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:rgba(12,14,20,.88);
+    backdrop-filter:blur(20px);
+  }
+
+  .mobile-nav button{
+    flex:1;
+    color:var(--muted);
+    background:none;
+    border-radius:12px;
+    font-size:10px;
+  }
+
+  .mobile-nav button.active{
+    color:white;
+    background:rgba(255,255,255,.07);
+  }
+}
+
+@media(max-width:620px){
+
+  #app{
+    padding:90px 16px 100px;
+  }
+
+  .hero{
+    min-height:430px;
+    padding:35px 24px;
+    border-radius:23px;
+  }
+
+  .hero h1{
+    font-size:47px;
+    letter-spacing:-3px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .detail-top{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:25px;
+  }
+
+  .detail h1{
+    font-size:32px;
+  }
+
+  .about-box{
+    padding:28px;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .actions button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================
+     BACKGROUND
+========================================= -->
+
+<div id="background">
+
+  <canvas id="particles"></canvas>
+
+  <div class="grid-bg"></div>
+
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+
+  <div class="noise"></div>
+
+</div>
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header>
+
+<nav class="nav">
+
+  <div class="logo">
+
+    <div class="logo-icon">
+      M
+    </div>
+
+    Muhsin Store
+
+  </div>
+
+
+  <div class="nav-links">
+
+    <button data-route="home">
+      Ana Sayfa
+    </button>
+
+    <button data-route="apps">
+      Uygulamalar
+    </button>
+
+    <button data-route="about">
+      Hakkında
+    </button>
+
+  </div>
+
+
+  <div class="status">
+
+    <i></i>
+
+    Sistemler aktif
+
+  </div>
+
+</nav>
+
+</header>
+
+
+<!-- =========================================
+     APP
+========================================= -->
+
+<main id="app"></main>
+
+
+<!-- =========================================
+     MOBILE NAV
+========================================= -->
+
+<nav class="mobile-nav">
+
+  <button data-route="home">
+    ◈<br>
+    Ana Sayfa
+  </button>
+
+  <button data-route="apps">
+    ▦<br>
+    Uygulamalar
+  </button>
+
+  <button data-route="about">
+    ⓘ<br>
+    Hakkında
+  </button>
+
+</nav>
+
+
+<!-- =========================================
+     CROW
+========================================= -->
+
+<div id="crow">
+
+<svg viewBox="0 0 32 32">
+
+  <g class="crow-wing">
+
+    <path
+      d="M9 11L2 7l3 8 7 2z"
+      fill="#252231"
+    />
+
+  </g>
+
+  <path
+    d="M8 11h10v2h5v7h-4v4h-4v3h-3v-3H8v-3H5v-7h3z"
+    fill="#17151f"
+  />
+
+  <path
+    d="M18 12h5v2h6v2h-6v3h-5z"
+    fill="#17151f"
+  />
+
+  <path
+    d="M18 12h2v2h-2z"
+    fill="#facc15"
+  />
+
+  <path
+    d="M24 15h6v2h-6z"
+    fill="#f97316"
+  />
+
+</svg>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   APP DATA
+========================================= */
+
+const apps=[
+
+{
+ id:"scriptorium",
+ name:"Scriptorium",
+ icon:"✒",
+ color:"#8b5cf6",
+ published:true,
+ category:"Üretkenlik",
+ version:"1.0.0",
+ description:
+ "Yazı, içerik üretimi ve kişisel çalışmalar için modern çalışma alanı."
+},
+
+
+{
+ id:"AI",
+ name:"AI",
+ icon:"✦",
+ color:"#06b6d4",
+ published:false,
+ category:"Yapay Zekâ",
+ version:"Yakında",
+ description:
+ "Kişisel yapay zekâ deneyleri ve araçları."
+},
+
+{
+ id:"study",
+ name:"Study",
+ icon:"⌘",
+ color:"#f59e0b",
+ published:false,
+ category:"Eğitim",
+ version:"Yakında",
+ description:
+ "Ders çalışma, tekrar ve akademik ilerleme için planlanan uygulama."
+},
+
+{
+ id:"Game",
+ name:"Game",
+ icon:"◆",
+ color:"#10b981",
+ published:false,
+ category:"Oyun",
+ version:"Yakında",
+ description:
+ "oyun."
+},
+
+{
+ id:"<Music>",
+ name:"Music",
+ icon:"♫",
+ color:"#ec4899",
+ published:false,
+ category:"Müzik",
+ version:"Yakında",
+ description:
+ "Beat üretimi ve müzik deneyleri için planlanan proje."
+}
+
+];
+
+
+/* =========================================
+   ROUTER
+========================================= */
+
+function go(route){
+
+ location.hash="#/"+route;
+
+}
+
+function router(){
+
+ const route=
+ location.hash.replace("#/","")||"home";
+
+ if(route==="home"){
+   home();
+   return;
+ }
+
+ if(route==="apps"){
+   applications();
+   return;
+ }
+
+ if(route==="about"){
+   about();
+   return;
+ }
+
+ if(route.startsWith("app/")){
+
+   detail(
+     route.replace("app/","")
+   );
+
+   return;
+
+ }
+
+ go("home");
+
+}
+
+window.addEventListener(
+ "hashchange",
+ router
+);
+
+
+/* =========================================
+   COMMON
+========================================= */
+
+function setPage(content){
+
+ const app=
+ document.getElementById("app");
+
+ app.innerHTML=content;
+
+ window.scrollTo(0,0);
+
+}
+
+
+/* =========================================
+   HOME
+========================================= */
+
+function home(){
+
+ setPage(`
+
+ <div class="page">
+
+  <section class="hero">
+
+   <div class="hero-content">
+
+    <div class="eyebrow">
+
+      <span class="eyebrow-dot"></span>
+
+      MUHSIN STORE · 2026
+
+    </div>
+
+    <h1>
+
+      Herkes İçin
+
+      <span>ekosistem.</span>
+
+    </h1>
+
+    <p>
+
+      Muhsin tarafından geliştirilen uygulamalar,
+      deneysel projeler ve kişisel çalışmalar.
+      Tek bir dijital mağazada.
+
+    </p>
+
+    <div class="actions">
+
+      <button
+        class="primary"
+        onclick="go('apps')"
+      >
+        Uygulamaları keşfet
+      </button>
+
+      <button
+        class="secondary"
+        onclick="go('about')"
+      >
+        Muhsin Store
+      </button>
+
+    </div>
+
+   </div>
+
+  </section>
+
+
+  <section class="section">
+
+   <div class="section-head">
+
+    <div>
+
+      <h2>Öne çıkan</h2>
+
+      <div class="section-sub">
+        Yayınlanmış uygulamalar
+      </div>
+
+    </div>
+
+    <button
+      class="secondary"
+      onclick="go('apps')"
+    >
+      Tümünü gör
+    </button>
+
+   </div>
+
+   <div class="grid">
+
+    ${apps
+      .filter(a=>a.published)
+      .map(card)
+      .join("")}
+
+   </div>
+
+  </section>
+
+
+  <section class="section">
+
+   <div class="section-head">
+
+    <div>
+
+      <h2>Yakında</h2>
+
+      <div class="section-sub">
+        Geliştirme aşamasındaki projeler
+      </div>
+
+    </div>
+
+   </div>
+
+   <div class="grid">
+
+    ${apps
+      .filter(a=>!a.published)
+      .slice(0,3)
+      .map(card)
+      .join("")}
+
+   </div>
+
+  </section>
+
+ </div>
+
+ `);
+
+ updateNav("home");
+
+}
+
+
+/* =========================================
+   APPLICATIONS
+========================================= */
+
+function applications(){
+
+ setPage(`
+
+ <div class="page">
+
+  <div class="section-head">
+
+   <div>
+
+    <h1>Uygulamalar</h1>
+
+    <div class="section-sub">
+      Muhsin Store'daki tüm projeler
+    </div>
+
+   </div>
+
+  </div>
+
+
+  <div class="search">
+
+   <input
+     id="search"
+     placeholder="Uygulama, kategori veya açıklama ara..."
+     oninput="searchApps()"
+   >
+
+  </div>
+
+
+  <div
+    class="grid"
+    id="appGrid"
+  >
+
+   ${apps.map(card).join("")}
+
+  </div>
+
+ </div>
+
+ `);
+
+ updateNav("apps");
+
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+function card(app){
+
+ return `
+
+ <article
+   class="card"
+   style="--app-color:${app.color}"
+ >
+
+   <div
+     class="icon"
+     style="background:${app.color}"
+   >
+     ${app.icon}
+   </div>
+
+   <h3>
+     ${app.name}
+   </h3>
+
+   <p>
+     ${app.description}
+   </p>
+
+   <div class="card-bottom">
+
+    <button
+      onclick="go('app/${app.id}')"
+    >
+      ${app.published?"Aç":"Detaylar"}
+    </button>
+
+    <button
+      class="info"
+      onclick="go('app/${app.id}')"
+    >
+      i
+    </button>
+
+   </div>
+
+ </article>
+
+ `;
+
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+function searchApps(){
+
+ const query=
+ document
+ .getElementById("search")
+ .value
+ .toLowerCase();
+
+ const result=
+ apps.filter(app=>
+   app.name.toLowerCase().includes(query) ||
+   app.category.toLowerCase().includes(query) ||
+   app.description.toLowerCase().includes(query)
+ );
+
+ document.getElementById("appGrid").innerHTML=
+
+ result.length
+ ? result.map(card).join("")
+ : `
+
+ <div style="
+   grid-column:1/-1;
+   text-align:center;
+   padding:60px;
+   color:#8d96a8;
+ ">
+   Sonuç bulunamadı.
+ </div>
+
+ `;
+
+}
+
+
+/* =========================================
+   DETAIL
+========================================= */
+
+function detail(id){
+
+ const app=
+ apps.find(a=>a.id===id);
+
+ if(!app){
+
+   setPage(`
+
+    <div class="page about">
+
+     <div class="about-box">
+
+      <h1>404</h1>
+
+      <p>
+       Bu uygulama bulunamadı.
+      </p>
+
+      <button
+        class="primary"
+        onclick="go('apps')"
+        style="margin-top:25px"
+      >
+        Uygulamalara dön
+      </button>
+
+     </div>
+
+    </div>
+
+   `);
+
+   return;
+
+ }
+
+
+ setPage(`
+
+ <div
+   class="page detail"
+   style="--detail-color:${app.color}"
+ >
+
+  <button
+    class="back"
+    onclick="go('apps')"
+  >
+    ← Uygulamalara dön
+  </button>
+
+
+  <section class="detail-top">
+
+   <div
+     class="detail-icon"
+     style="
+       background:${app.color};
+       box-shadow:0 15px 50px ${app.color}44
+     "
+   >
+     ${app.icon}
+   </div>
+
+
+   <div>
+
+    <h1>
+      ${app.name}
+    </h1>
+
+    <div class="detail-desc">
+      ${app.description}
+    </div>
+
+    ${
+      app.published
+
+      ? `
+
+       <button
+         class="download"
+         onclick="downloadApp('${app.id}')"
+       >
+         İndir
+       </button>
+
+      `
+
+      :
+
+      `
+
+       <button
+         class="download"
+         disabled
+         style="opacity:.4;cursor:not-allowed"
+       >
+         Henüz yayınlanmadı
+       </button>
+
+      `
+    }
+
+   </div>
+
+  </section>
+
+
+  <section class="info-box">
+
+   <h2>
+     Uygulama bilgileri
+   </h2>
+
+   <p>
+     ${app.description}
+   </p>
+
+   <p>
+
+     Kategori: ${app.category}
+     <br>
+
+     Sürüm: ${app.version}
+     <br>
+
+     Geliştirici: Muhsin
+
+   </p>
+
+  </section>
+
+ </div>
+
+ `);
+
+ updateNav("apps");
+
+}
+
+
+/* =========================================
+   ABOUT
+========================================= */
+
+function about(){
+
+ setPage(`
+
+ <div class="page about">
+
+  <div class="about-box">
+
+   <h1>
+     Muhsin Store
+   </h1>
+
+   <p>
+
+     Muhsin Store, Muhsin tarafından geliştirilen
+     uygulamaların, oyunların ve deneysel projelerin
+     kişisel yayın platformudur.
+
+   </p>
+
+   <p>
+
+     Mağaza; üretkenlik, eğitim, yapay zekâ,
+     oyun, müzik ve farklı deneysel projeleri
+     tek bir yerde toplamak için tasarlanmıştır.
+
+   </p>
+
+   <p>
+
+     Bu site tek HTML dosyasında çalışan
+     Single Page Application mimarisine sahiptir.
+     Sayfalar arasında geçiş yapılırken tarayıcı
+     tamamen yenilenmez.
+
+   </p>
+
+  </div>
+
+ </div>
+
+ `);
+
+ updateNav("about");
+
+}
+
+
+/* =========================================
+   NAV
+========================================= */
+
+function updateNav(active){
+
+ document
+ .querySelectorAll("[data-route]")
+ .forEach(button=>{
+
+   button.classList.toggle(
+     "active",
+     button.dataset.route===active
+   );
+
+   button.onclick=
+     ()=>go(button.dataset.route);
+
+ });
+
+}
+
+
+/* =========================================
+   DOWNLOAD
+========================================= */
+
+function downloadApp(id){
+
+ const app=
+ apps.find(a=>a.id===id);
+
+ if(!app || !app.published)
+   return;
+
+
+   window.location.href =
+   "https://github.com/muhsintags/Stable-Scriptorium/releases/tag/1.1";
+
+
+ alert(
+   app.name+
+   " bir dakika."
+ );
+
+}
+
+
+/* =========================================
+   PARTICLE SYSTEM
+========================================= */
+
+const canvas=
+ document.getElementById("particles");
+
+const ctx=
+ canvas.getContext("2d");
+
+let particles=[];
+
+function resizeCanvas(){
+
+ canvas.width=
+   window.innerWidth;
+
+ canvas.height=
+   window.innerHeight;
+
+}
+
+window.addEventListener(
+ "resize",
+ resizeCanvas
+);
+
+resizeCanvas();
+
+
+for(let i=0;i<85;i++){
+
+ particles.push({
+
+   x:Math.random()*innerWidth,
+
+   y:Math.random()*innerHeight,
+
+   size:.5+Math.random()*1.8,
+
+   speed:.15+Math.random()*.55,
+
+   alpha:.15+Math.random()*.45,
+
+   drift:(Math.random()-.5)*.25
+
+ });
+
+}
+
+
+function drawParticles(){
+
+ ctx.clearRect(
+   0,
+   0,
+   canvas.width,
+   canvas.height
+ );
+
+ for(const p of particles){
+
+   p.y-=p.speed;
+   p.x+=p.drift;
+
+   if(p.y<-10){
+     p.y=canvas.height+10;
+     p.x=Math.random()*canvas.width;
+   }
+
+   if(p.x<-10)
+     p.x=canvas.width+10;
+
+   if(p.x>canvas.width+10)
+     p.x=-10;
+
+   ctx.beginPath();
+
+   ctx.arc(
+     p.x,
+     p.y,
+     p.size,
+     0,
+     Math.PI*2
+   );
+
+   ctx.fillStyle=
+     `rgba(167,139,250,${p.alpha})`;
+
+   ctx.fill();
+
+ }
+
+ requestAnimationFrame(
+   drawParticles
+ );
+
+}
+
+drawParticles();
+
+
+/* =========================================
+   CROW
+========================================= */
+
+const crow=
+ document.getElementById("crow");
+
+let crowX=innerWidth*.5;
+let crowY=120;
+
+let targetX=crowX;
+let targetY=crowY;
+
+let velocityX=0;
+let velocityY=0;
+
+function newCrowTarget(){
+
+ targetX=
+   60+
+   Math.random()*
+   Math.max(100,innerWidth-120);
+
+ targetY=
+   80+
+   Math.random()*
+   Math.max(100,innerHeight-170);
+
+}
+
+newCrowTarget();
+
+
+function animateCrow(){
+
+ const dx=
+   targetX-crowX;
+
+ const dy=
+   targetY-crowY;
+
+ const distance=
+   Math.sqrt(dx*dx+dy*dy);
+
+
+ if(distance<80){
+
+   newCrowTarget();
+
+ }
+
+
+ velocityX+=dx*.0009;
+ velocityY+=dy*.0009;
+
+ velocityX*=.96;
+ velocityY*=.96;
+
+ const maxSpeed=4;
+
+ const speed=
+   Math.sqrt(
+     velocityX*velocityX+
+     velocityY*velocityY
+   );
+
+ if(speed>maxSpeed){
+
+   velocityX=
+     velocityX/speed*maxSpeed;
+
+   velocityY=
+     velocityY/speed*maxSpeed;
+
+ }
+
+
+ crowX+=velocityX;
+ crowY+=velocityY;
+
+
+ const bob=
+   Math.sin(Date.now()/120)*3;
+
+ const direction=
+   velocityX>=0?1:-1;
+
+ const rotation=
+   Math.max(
+     -12,
+     Math.min(12,velocityY*3)
+   );
+
+
+ crow.style.transform=`
+
+   translate3d(
+     ${crowX}px,
+     ${crowY+bob}px,
+     0
+   )
+
+   scaleX(${direction})
+
+   rotate(${rotation}deg)
+
+ `;
+
+
+ requestAnimationFrame(
+   animateCrow
+ );
+
+}
+
+animateCrow();
+
+
+/* =========================================
+   START
+========================================= */
+
+router();
+
+</script>
+
+</body>
+</html>
+```
